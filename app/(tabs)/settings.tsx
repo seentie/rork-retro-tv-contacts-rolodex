@@ -270,6 +270,7 @@ export default function SettingsScreen() {
         Alert.alert('Success', 'Contacts exported successfully!');
       } else {
         const file = new File(Paths.document, fileName);
+        file.create();
         file.write(exportData);
 
         const canShare = await Sharing.isAvailableAsync();
