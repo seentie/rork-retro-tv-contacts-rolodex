@@ -13,7 +13,7 @@ import {
   FlatList,
 } from 'react-native';
 import * as Contacts from 'expo-contacts';
-import * as FileSystem from 'expo-file-system';
+import { File, Paths } from 'expo-file-system';
 import * as Sharing from 'expo-sharing';
 import { useContacts } from '@/hooks/contacts-store';
 import { RolodexTheme } from '@/constants/rolodex-theme';
@@ -269,19 +269,17 @@ export default function SettingsScreen() {
         URL.revokeObjectURL(url);
         Alert.alert('Success', 'Contacts exported successfully!');
       } else {
-        const fileUri = `${FileSystem.documentDirectory}${fileName}`;
-        await FileSystem.writeAsStringAsync(fileUri, exportData, {
-          encoding: FileSystem.EncodingType.UTF8,
-        });
+        const file = new File(Paths.document, fileName);
+        file.write(exportData);
 
         const canShare = await Sharing.isAvailableAsync();
         if (canShare) {
-          await Sharing.shareAsync(fileUri, {
+          await Sharing.shareAsync(file.uri, {
             mimeType: 'application/json',
             dialogTitle: 'Export Contacts',
           });
         } else {
-          Alert.alert('Success', `Contacts saved to: ${fileUri}`);
+          Alert.alert('Success', `Contacts saved to: ${file.uri}`);
         }
       }
     } catch (error) {
