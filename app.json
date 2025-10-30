@@ -37,7 +37,9 @@
         "READ_CONTACTS",
         "WRITE_CONTACTS",
         "INTERNET"
-      ]
+     ],
+"compileSdkVersion": 35,
+"targetSdkVersion": 35
     },
     "web": {
       "favicon": "./assets/images/favicon.png"
